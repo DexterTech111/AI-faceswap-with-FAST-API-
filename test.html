@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <meta charset="UTF-8">
+    <title>Face Swap API test Frontend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"    crossorigin="anonymous"   >
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Face Swap API Frontend</h1>
+
+       
+        <ul class="nav nav-tabs" id="apiTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="create-user-tab" data-bs-toggle="tab" href="#create-user" role="tab" aria-controls="create-user" aria-selected="true">Create User</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" id="get-users-tab" data-bs-toggle="tab" href="#get-users" role="tab" aria-controls="get-users" aria-selected="false">Get All Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="upload-selfie-tab" data-bs-toggle="tab" href="#upload-selfie" role="tab" aria-controls="upload-selfie" aria-selected="false">Upload Selfie</a>
+            </li>
+            
+        </ul>
+
+       
+        <div class="tab-content" id="apiTabsContent">
+            
+            <div class="tab-pane fade show active" id="create-user" role="tabpanel" aria-labelledby="create-user-tab">
+               
+                <form id="createUserForm" class="my-4">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+                   
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="isAdmin">
+                        <label class="form-check-label" for="isAdmin">Is Admin</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                </form>
+                
+                <div id="createUserResponse"></div>
+            </div>
+
+           
+            <div class="tab-pane fade" id="get-users" role="tabpanel" aria-labelledby="get-users-tab">
+               
+                <form id="getUsersForm" class="my-4">
+                    <div class="mb-3">
+                        <label for="apiKey" class="form-label">API Key</label>
+                        <input type="text" class="form-control" id="apiKey" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apiToken" class="form-label">API Token</label>
+                        <input type="text" class="form-control" id="apiToken" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Get All Users</button>
+                </form>
+               
+                <div id="getUsersResponse"></div>
+            </div>
+
+        
+            <div class="tab-pane fade" id="upload-selfie" role="tabpanel" aria-labelledby="upload-selfie-tab">
+               
+                <form id="uploadSelfieForm" class="my-4" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="selfieFile" class="form-label">Select Selfie Image</label>
+                        <input type="file" class="form-control" id="selfieFile" accept="image/*" required>
+                    </div>
+                   
+                    <div class="mb-3">
+                        <label for="apiKeySelfie" class="form-label">API Key</label>
+                        <input type="text" class="form-control" id="apiKeySelfie" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apiTokenSelfie" class="form-label">API Token</label>
+                        <input type="text" class="form-control" id="apiTokenSelfie" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload Selfie</button>
+                </form>
+                
+                <div id="uploadSelfieResponse"></div>
+            </div>
+        </div>
+    </div>
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"     crossorigin="anonymous"></script>
+
+   
+    <script src="script.js"></script>
+</body>
+</html>

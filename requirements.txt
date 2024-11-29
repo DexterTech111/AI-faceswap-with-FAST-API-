@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+motor
+pydantic
+python-dotenv
+insightface
+opencv-python
+pymongo
