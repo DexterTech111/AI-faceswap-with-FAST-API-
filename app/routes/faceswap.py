@@ -8,6 +8,7 @@ import os
 import cv2
 import numpy as np
 import insightface
+from insightface.app import FaceAnalysis
 from insightface.model_zoo import get_model
 
 router = APIRouter()
@@ -33,10 +34,10 @@ async def face_swap(
     with open(target_path, "wb") as file_object:
         file_object.write(await target_image.read())
 
-    # Initialize the face swap model
-    model = get_model('inswapper_128.onnx', download=True, 
-                      providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
-    model.prepare(ctx_id=0)
+    # Initialize the face analysis and face swap model
+    app = FaceAnalysis(name='buffalo_l')
+    app.prepare(ctx_id=0, det_size=(640, 640))
+    swapper = insightface.model_zoo.get_model('inswapper_128.onnx', download=True, download_zip=True)
 
     # Read the images
     source_img = cv2.imread(selfie_path)
@@ -48,8 +49,22 @@ async def face_swap(
     if target_img is None:
         raise HTTPException(status_code=400, detail="Failed to load target image.")
 
-    # Perform face swap
-    swapped_img = model.get(target_img, source_img, paste_back=True)
+    # Perform face analysis on the target image
+    faces = app.get(target_img)
+    faces = sorted(faces, key=lambda x: x.bbox[0])
+    if not faces:
+        raise HTTPException(status_code=400, detail="No faces found in the target image.")
+
+    # Assume the first face found in the source image is the one to use for swapping
+    source_faces = app.get(source_img)
+    if not source_faces:
+        raise HTTPException(status_code=400, detail="No faces found in the selfie image.")
+    source_face = source_faces[0]
+
+    # Perform face swap for all detected faces in the target image
+    swapped_img = target_img.copy()
+    for face in faces:
+        swapped_img = swapper.get(swapped_img, face, source_face, paste_back=True)
 
     # Save the swapped image
     output_path = f"images/{current_user.id}_swapped_{target_image.filename}"
