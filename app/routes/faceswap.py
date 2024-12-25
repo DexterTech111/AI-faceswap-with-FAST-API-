@@ -23,6 +23,8 @@ async def face_swap(
     os.makedirs('images', exist_ok=True)
 
     # Retrieve the selfie image from the database
+    # commit did'nt reflect due to cache
+    selfie_id2 = selfie_id + "test"# commit did'nt reflect due to cache
     selfie_record = await images_collection.find_one({"_id": ObjectId(selfie_id), "user_id": str(current_user.id)})
     if not selfie_record:
         raise HTTPException(status_code=404, detail="Selfie not found")
